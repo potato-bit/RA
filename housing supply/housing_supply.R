@@ -1,4 +1,21 @@
 library("fpp2")
 library("tidyverse")
+library("readxl")
+library('xts')
+library('timetk')
 
-d1 <- read_excel()
+d1 <- as_tibble(read_excel("Dwellings by LA 1980-2021.xlsx"))
+d1 <- d1 %>% select(`DLUHC Code`, `ONS Code`, `Local Authority`, DS_Total, DC_Total, year)
+d1 <- d1 %>% filter(`DLUHC Code`=='U4610')
+d1$year <- as.Date(paste0(d1$year,'-12-31'))
+dt <- d1 %>% select(DC_Total,year)
+sum(is.na(dt$DC_Total))
+dt <- na.omit(dt)
+dt <- ts(dt,start=1981,end=2021)
+dt
+length(dt)
+
+length(dt)
+summary(dt)
+plot(dt)
+ddata <- decompose(dt)
