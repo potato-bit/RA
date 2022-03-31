@@ -1,0 +1,10 @@
+linters: with_defaults(
+  line_length_linter(240),
+  cyclocomp_linter = NULL,
+  object_name_linter = NULL,
+  object_usage_linter = NULL,
+  single_quotes_linter = NULL,
+  trailing_whitespace_linter = NULL,
+  pipe_continuation_linter = NULL,
+  commas_linter=NULL,
+  infix_spaces_linter=NULL)
