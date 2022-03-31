@@ -1,5 +1,6 @@
 library('tidyverse')
 library('readxl')
+
 d1 <- read_excel('C:/Windows/Temp/RA/housing prices/median/hpssadataset9medianpricepaidforadministrativegeographies.xls',
                  sheet='2a',skip=5)
 d1 <- as_tibble(d1)
@@ -25,8 +26,8 @@ d3 <- d3 %>% slice(8:41)
 d3 <- d3 %>% rename(year=Title,CPIH_2015=`CPIH INDEX 00: ALL ITEMS 2015=100`)
 d3$CPIH_2015 <- d3$CPIH_2015 %>% as.numeric() %>% round(digits=2)
 d3$year <- d3$year %>% as.numeric()
-
 base <- d3$CPIH_2015[34]
+d3 <- d3 %>% mutate(real_change=((CPIH_2015-base)/base)*100)
 
 d2$real_2021 <- NA
 for (x in 1995:2021) {
