@@ -1,7 +1,9 @@
 library('tidyverse')
 library('readxl')
 
-d1 <- read_excel('C:/Windows/Temp/RA/housing prices/median/hpssadataset9medianpricepaidforadministrativegeographies.xls',
+
+
+d1 <- read_excel('housing prices/median/hpssadataset9medianpricepaidforadministrativegeographies.xls',
                  sheet='2a',skip=5)
 d1 <- as_tibble(d1)
 head(d1)
@@ -9,13 +11,14 @@ colnames(d1) <- gsub('Year ending ','',colnames(d1))
 head(d1)
 
 d1 <- d1 %>% select(-1:-2)
-d1 <- d1 %>% rename('LA code'=`Local authority code`,'LA name'= 'Local authority name')
+d1 <- d1 %>% rename('LA_code'=`Local authority code`,'LA'= 'Local authority name')
 d1 <- d1 %>% pivot_longer(!c(1:2),names_to='quarter',values_to='median')
+openxlsx::write.xlsx(d1,'Median House Prices by LA 1995-2021, Quarterly, Long.xlsx')
 
 d2 <- d1[F,]
 for (x in 1995:2021) {
   df <- d1 %>% filter(grepl(paste(as.character(x),'$',sep=''),quarter))
-  df <- df %>% group_by(`LA code`,`LA name`) %>% summarise(med=mean(median),year=x)
+  df <- df %>% group_by(LA_code,LA) %>% summarise(med=mean(median),year=x)
   d2 <- rbind(d2,df)
 }
 d2
