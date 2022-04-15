@@ -6,6 +6,16 @@ library(zoo)
 library(tidymodels)
 library(modeltime)
 library(timetk)
+library(tseries)
+
+d1 <- as_tibble(read_excel('D:\\Documents\\projects\\RA\\cleaned datasets\\combined.xlsx'))
+d1 <- subset(d1,select=-c(1))
+head(d1)
+dcov <- d1 %>% filter(LA=='Coventry')
+adf.test(dcov$DC_Total)
+adf.test(dcov$real_interest)
+
+
 
 d1 <- as_tibble(read_excel('Dwellings by LA 2005-2021, Quarterly.xlsx'))
 head(d1)
