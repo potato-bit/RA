@@ -44,6 +44,8 @@ dt <- dt %>% rename(LA=LA.y) %>% relocate(LA,.after=LA_code)
 head(dt)
 length(unique(dt$LA_code))
 
+
+
 # ADF Test for Stationarity
 dcov <- dt %>% filter(LA=='Coventry')
 dcov %>% ggplot(aes(x=date,y=population_ts)) + geom_line()
