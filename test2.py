@@ -12,7 +12,50 @@ class House:
         return f"House ID:{self.id} has {self.rooms} rooms and {len(self.bids)} bid(s). It is currently {self.status}"
 
     def shortlist(self):
+        top_priority = 5
+        shortlist = []
+        priority = []
+        ap_dates = []
+        bp_dates = []
+        for x in self.bids:
+            if applicants[x].priority < top_priority:
+                priority.clear()
+                top_priority = applicants[x].priority
+                priority.append(x)
+            elif applicants[x].priority == top_priority:
+                priority.append(x)
+            else:
+                continue
+
+        shortlist = priority
+        if len(priority) > 1:
+            early_date = datetime.date.today()
+            for x in priority:
+                if applicants[x].ap_date < early_date:
+                    early_date = applicants[x].ap_date
+                    ap_dates.append(x)
+                elif applicants[x].ap_date == early_date:
+                    ap_dates.append(x)
+                else:
+                    continue
+            shortlist = ap_dates
+
         
+        if len(ap_dates) > 1:
+            early_date = datetime.date.today()
+            for x in ap_dates:
+                if applicants[x].bp_date < early_date:
+                    early_date = applicants[x].bp_date
+                    bp_dates.append(x)
+                elif applicants[x].bp_date == early_date:
+                    bp_dates.append(x)
+                else:
+                    continue
+            shortlist = bp_dates
+
+        return shortlist
+
+
 
 class Applicant:
     def __init__(self,id,priority,bp_date,ap_date,hsize,status):
@@ -77,3 +120,6 @@ for x in houses:
 
 for x in applicants:
     applicants[x].bidder(houses)
+
+for x in houses:
+    houses[x].shortlist()
